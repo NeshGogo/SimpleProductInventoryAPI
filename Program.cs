@@ -16,7 +16,12 @@ builder.Services.AddApiVersioning(opt =>
     opt.AssumeDefaultVersionWhenUnspecified = true;
 
     //opt.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
-}).AddMvc();
+}).AddMvc()
+.AddApiExplorer(opt =>
+{
+    opt.GroupNameFormat = "'v'VVV";
+    opt.SubstituteApiVersionInUrl = true;
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
