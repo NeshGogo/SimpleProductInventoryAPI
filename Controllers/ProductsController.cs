@@ -17,9 +17,12 @@ namespace SampleProductInventoryApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] PaginationQueryParameters query)
         {
-            return await _context.Products.ToListAsync();
+            var products = _context.Products
+                .Skip(query.Size * (query.Page - 1))
+                .Take(query.Size);
+            return await products.ToListAsync();
         }
 
         [HttpGet("{id}")]
