@@ -31,6 +31,17 @@ namespace SampleProductInventoryApi.Controllers
             if (!string.IsNullOrEmpty(query.Sku))
                 products = products.Where(p => p.Sku == query.Sku);
 
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                if(typeof(Product).GetProperty(query.SortBy) != null)
+                {
+                    products = products.OrderByCustom(query.SortBy, query.SortOrder);
+                }
+            }
+                products = products.Where(p => p.Name.ToLower().Contains(query.Name.ToLower()));
+            if (!string.IsNullOrEmpty(query.Sku))
+                products = products.Where(p => p.Sku == query.Sku);
+
             products = _context.Products
                 .Skip(query.Size * (query.Page - 1))
                 .Take(query.Size);
