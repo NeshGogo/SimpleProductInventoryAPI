@@ -26,6 +26,11 @@ namespace SampleProductInventoryApi.Controllers
             if (query.MaxPrice != null)
                 products = products.Where(p => p.Price <= query.MaxPrice);
 
+            if(!string.IsNullOrEmpty(query.Name))
+                products = products.Where(p => p.Name.ToLower().Contains(query.Name.ToLower()));
+            if (!string.IsNullOrEmpty(query.Sku))
+                products = products.Where(p => p.Sku == query.Sku);
+
             products = _context.Products
                 .Skip(query.Size * (query.Page - 1))
                 .Take(query.Size);
