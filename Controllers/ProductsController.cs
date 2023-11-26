@@ -17,9 +17,16 @@ namespace SampleProductInventoryApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] PaginationQueryParameters query)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] ProductQueryParameters query)
         {
-            var products = _context.Products
+            var products =  _context.Products.AsQueryable();
+           
+            if (query.MinPrice != null)
+                products = products.Where(p => p.Price >= query.MinPrice);
+            if (query.MaxPrice != null)
+                products = products.Where(p => p.Price <= query.MaxPrice);
+
+            products = _context.Products
                 .Skip(query.Size * (query.Page - 1))
                 .Take(query.Size);
             return await products.ToListAsync();
