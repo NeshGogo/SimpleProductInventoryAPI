@@ -6,14 +6,14 @@ using SampleProductInventoryApi.Models;
 namespace SampleProductInventoryApi.Controllers
 {
     //[Route("api/[controller]")]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("v{v:apiVersion}/Products")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductsV2Controller : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public ProductsController(AppDbContext context)
+        public ProductsV2Controller(AppDbContext context)
         {
             _context = context;
             context.Database.EnsureCreated();
@@ -22,7 +22,8 @@ namespace SampleProductInventoryApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] ProductQueryParameters query)
         {
-            var products =  _context.Products.AsQueryable();
+            var products =  _context.Products.AsQueryable()
+                .Where(p => p.IsAvailable);
            
             if (query.MinPrice != null)
                 products = products.Where(p => p.Price >= query.MinPrice);
