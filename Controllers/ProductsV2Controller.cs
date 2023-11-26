@@ -5,9 +5,10 @@ using SampleProductInventoryApi.Models;
 
 namespace SampleProductInventoryApi.Controllers
 {
-    //[Route("api/[controller]")]
     [ApiVersion("2.0")]
-    [Route("v{v:apiVersion}/Products")]
+    //[Route("api/[controller]")]
+    //[Route("v{v:apiVersion}/Products")]
+    [Route("api/Products")]
     [ApiController]
     public class ProductsV2Controller : ControllerBase
     {

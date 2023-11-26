@@ -1,6 +1,7 @@
 using SampleProductInventoryApi;
 using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.EntityFrameworkCore;
+using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddApiVersioning(opt =>
     opt.ReportApiVersions = true;
     opt.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
     opt.AssumeDefaultVersionWhenUnspecified = true;
+
+    opt.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
 }).AddMvc();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
